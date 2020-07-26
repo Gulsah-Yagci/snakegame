@@ -29,6 +29,11 @@ snake_speed = 15
 font_style = pygame.font.SysFont(None, 30)
 score_font = pygame.font.SysFont(None, 30)
 
+def playerScore(score):
+    point = score_font.render('Game Score:'+str(score),True,yellow)
+    display.blit(point, [0,0])
+
+
 def snake(snake_block,snake_list):
     for i in snake_list:
         pygame.draw.rect(display,black,[i[0],i[1],snake_block,snake_block])
@@ -36,7 +41,7 @@ def snake(snake_block,snake_list):
 # message fonksiyonu
 def message(msg, color):
     mesg = font_style.render(msg, True, color)
-    display.blit(mesg, [display_width / 3, display_height / 3])
+    display.blit(mesg, [display_width / 6, display_height / 3])
 
 # oyunun döngüsünün fonksiyonu
 def gameLoop():
@@ -60,7 +65,8 @@ def gameLoop():
 
         while game_close == True:
             display.fill(blue)
-            message("Game Over! \n Press Q-Quit or C-Play Again", red)
+            message("Game Over! Press Q-Quit or C-Play Again", red)
+            playerScore(len_of_snake-1)
             pygame.display.update()
 
             for event in pygame.event.get():
@@ -106,7 +112,9 @@ def gameLoop():
         for i in snake_list[:-1]:
             if i == snake_head:
                 game_close = True
+
         snake(snake_block, snake_list)
+        playerScore(len_of_snake-1)
 
         pygame.display.update()
 
@@ -114,6 +122,7 @@ def gameLoop():
             foodx = round(random.randrange(0, display_width - snake_block) / 10.0) * 10.0
             foody = round(random.randrange(0, display_height - snake_block) / 10.0) * 10.0
             len_of_snake += 1
+
         clock.tick(snake_speed)
 
     pygame.quit()
